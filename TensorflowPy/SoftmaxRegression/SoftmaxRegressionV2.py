@@ -17,6 +17,7 @@ import input_data
 
 
 LearnRate = 1e-4
+EpochTotal = 2000
 
 
 def weight_variable(shape):
@@ -109,7 +110,7 @@ if __name__ == "__main__":
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
     sess.run(tf.initialize_all_variables())
     with sess.as_default():
-        for i in range(20000):
+        for i in range(EpochTotal):
             batch = mnist.train.next_batch(50)
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
