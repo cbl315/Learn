@@ -42,6 +42,25 @@ func testRemoveRepSpace() {
 	fmt.Println(removeRepeatSpace(s))
 }
 
+// `Not Equal` expected, get `Equal`
+func testMapKeyExists() {
+	a := map[string]int{"A": 0}
+	b := map[string]int{"B": 42}
+	for k, xv := range a{
+		// should be:
+		//if yv, ok := b[k]; !ok || yv != xv{
+		if xv != b[k]{
+			fmt.Println("Not equal")
+		} else {
+			fmt.Println("Equal")
+		}
+	}
+}
+
+func testCharCount() {
+	charcount()
+}
+
 func main() {
 
 
@@ -56,6 +75,11 @@ func main() {
 	// practice test rotate
 	//testRotate()
 	//testRemoveRep()
-	testRemoveRepSpace()
+	//testRemoveRepSpace()
+
+	// 4.3
+	//testMapKeyExists()
+	//testCharCount()
+	wordFreq()
 	return
 }

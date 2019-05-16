@@ -1,6 +1,13 @@
 package main
 
-import "unicode"
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"unicode"
+	"unicode/utf8"
+)
 
 func AppendInt(x []int, y int) []int {
 	var z []int
@@ -86,4 +93,74 @@ func removeRepeatSpace(in []byte) (out []byte) {
 		last = rv
 	}
 	return out
+}
+
+
+func charcount() {
+	counts := make(map[rune]int)
+	var utflen [utf8.UTFMax + 1] int
+	invalid := 0
+	var stat = map[string]int{} // stat input rune's type count
+
+	in := bufio.NewReader(os.Stdin)
+	for {
+		r, n, err := in.ReadRune()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "charcount: %v\n", err)
+			os.Exit(1)
+		}
+		if r == unicode.ReplacementChar && n == 1{
+			invalid++
+			continue
+		}
+		counts[r]++
+		utflen[n]++
+		// better solution?
+		if unicode.IsLetter(r) {
+			stat["Letter"]++
+		}
+		if unicode.IsNumber(r) {
+			stat["Number"]++
+		}
+	}
+	fmt.Printf("rune\tcount\n")
+	for c, n := range counts {
+		fmt.Printf("%q\t%d\n", c, n)
+	}
+	fmt.Print("\nlen\ncount\n")
+	for i, n := range utflen {
+		if i > 0 {
+			fmt.Printf("%d\t%d\n", i, n)
+		}
+	}
+	if invalid > 0{
+		fmt.Printf("\n%d invalid UTF-8 characters\n", invalid)
+	}
+	fmt.Printf("type\tcount\n")
+	for c, n := range stat {
+		fmt.Printf("%q\t%d\n", c, n)
+	}
+}
+
+
+func wordFreq() {
+	wordCounts := make(map[string]int)
+	input := bufio.NewScanner(os.Stdin)
+	input.Split(bufio.ScanWords)
+	for input.Scan(){
+		word := input.Text()
+		wordCounts[word]++
+	}
+
+	// whether err
+	if err := input.Err();err != nil{
+		fmt.Fprintln(os.Stderr, "reading input:", err)
+	}
+	fmt.Printf("word\tcount\n")
+	for w, c := range wordCounts {
+		fmt.Printf("%q\t%d\n", w, c)
+	}
 }
