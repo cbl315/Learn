@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 )
 
 func testAppendInt() {
@@ -103,9 +104,33 @@ func testGithub() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	oneMonth := time.Hour * 24 * 30
+	oneYear := time.Hour * 24 * 365
 	fmt.Printf("%d issues:\n", result.TotalCount)
+	var ShorterThanMonth []*Issue
+	var ShorterThanYear []*Issue
+	var LongerThanYear []*Issue
 	for _, item := range result.Items {
-		fmt.Printf("#%-5d %9.9s %.55s\n", item.Number, item.User.Login, item.Title)
+		itemTime := time.Since(item.CreatedAt)
+		if itemTime < oneMonth { // issue time shorter than one month
+			ShorterThanMonth = append(ShorterThanMonth, item)
+		} else if itemTime < oneYear {
+			ShorterThanYear = append(ShorterThanYear, item)
+		} else {
+			LongerThanYear = append(LongerThanYear, item)
+		}
+	}
+	fmt.Println("Issues Shorter Than One Month")
+	for _, item := range ShorterThanMonth {
+		fmt.Printf("#%-5d %9.9s %.55s %#q\n", item.Number, item.User.Login, item.Title, item.CreatedAt)
+	}
+	fmt.Println("Issues Shorter Than One Year")
+	for _, item := range ShorterThanYear {
+		fmt.Printf("#%-5d %9.9s %.55s\n %#q", item.Number, item.User.Login, item.Title, item.CreatedAt)
+	}
+	fmt.Println("Issues Longer Than One Year")
+	for _, item := range LongerThanYear {
+		fmt.Printf("#%-5d %9.9s %.55s %#q\n", item.Number, item.User.Login, item.Title, item.CreatedAt)
 	}
 }
 
