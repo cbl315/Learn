@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"time"
@@ -134,6 +135,26 @@ func testGithub() {
 	}
 }
 
+func testGithubIssues() {
+	TokenPath := "github.token"
+	githubToken, err := ioutil.ReadFile(TokenPath)
+	if err != nil {
+		fmt.Printf("Token Path `%s` Not Exists\n", TokenPath)
+		return
+	}
+	err = loginOAuth(string(githubToken))
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("login github via OAuth Token success")
+	}
+}
+
+func testXkcd() {
+	//cacheJson()
+	searchByCache()
+}
+
 func main() {
 
 	// 4.2.1 append func
@@ -161,6 +182,9 @@ func main() {
 	//fmt.Printf("%v\n", a)
 	//testJsonMarshal()
 	//testJsonUnmarshal()
-	testGithub()
+	//testGithub()
+	//testGithubIssues()
+
+	testXkcd()
 	return
 }
