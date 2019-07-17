@@ -42,3 +42,39 @@ func testFindlinks1() {
 		fmt.Println(link)
 	}
 }
+
+/*
+5.2 编写函数，记录在HTML树中出现的同名元素的次数。
+*/
+
+func countElementTag(cnt map[string]int, n *html.Node) map[string]int {
+	if n.Type == html.ElementNode {
+		eleTag := n.Data
+		cnt[eleTag] += 1
+	}
+
+	// change call `visit` from loop to recursion
+	recursionNode := n.FirstChild
+	if recursionNode != nil {
+		cnt = countElementTag(cnt, recursionNode)
+	}
+	recursionNode = n.NextSibling
+	if recursionNode != nil {
+		cnt = countElementTag(cnt, recursionNode)
+	}
+	//fmt.Println(cnt)
+	return cnt
+}
+
+func testCountElementTag() {
+	doc, err := html.Parse(os.Stdin)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "findlinks1: %v\n", err)
+		os.Exit(1)
+	}
+	cnt := make(map[string]int)
+	result := countElementTag(cnt, doc)
+	for k, v := range result {
+		fmt.Println(k, v)
+	}
+}
