@@ -3,5 +3,6 @@ package main
 func main() {
 	//testFindlinks1()
 	//testOutline()
-	testCountElementTag()
+	//testCountElementTag()
+	testOutline2()
 }
