@@ -43,36 +43,69 @@ func forEachNode(n *html.Node, pre, post func(n *html.Node)) {
 	}
 }
 
-var depth int
+//var depth int
+//
+//func startElement(n *html.Node) {
+//	if n.Type == html.ElementNode {
+//		attrStr := ""
+//		defer func() { depth++ }()
+//		for _, attr := range n.Attr {
+//			k, v := attr.Key, attr.Val
+//			attrStr += fmt.Sprintf(" %s='%s'", k, v)
+//		}
+//		for c := n.FirstChild; c != nil; c = c.NextSibling {
+//			if c.Type == html.ElementNode {
+//				fmt.Printf("%*s<%s%s>\n", depth*2, "", n.Data, attrStr)
+//				return
+//			}
+//		}
+//		fmt.Printf("%*s<%s%s/>\n", depth*2, "", n.Data, attrStr)
+//	}
+//}
+//
+//func endElement(n *html.Node) {
+//	if n.Type == html.ElementNode {
+//		depth--
+//		for c := n.FirstChild; c != nil; c = c.NextSibling {
+//			if c.Type == html.ElementNode {
+//				fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
+//				return
+//			}
+//		}
+//	}
+//}
 
-func startElement(n *html.Node) {
-	if n.Type == html.ElementNode {
-		attrStr := ""
-		defer func() { depth++ }()
-		for _, attr := range n.Attr {
-			k, v := attr.Key, attr.Val
-			attrStr += fmt.Sprintf(" %s='%s'", k, v)
+func procFunc() (start func(node *html.Node), end func(node *html.Node)) {
+	var depth int
+	start = func(n *html.Node) {
+		if n.Type == html.ElementNode {
+			attrStr := ""
+			defer func() { depth++ }()
+			for _, attr := range n.Attr {
+				k, v := attr.Key, attr.Val
+				attrStr += fmt.Sprintf(" %s='%s'", k, v)
+			}
+			for c := n.FirstChild; c != nil; c = c.NextSibling {
+				if c.Type == html.ElementNode {
+					fmt.Printf("%*s<%s%s>\n", depth*2, "", n.Data, attrStr)
+					return
+				}
+			}
+			fmt.Printf("%*s<%s%s/>\n", depth*2, "", n.Data, attrStr)
 		}
-		for c := n.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type == html.ElementNode {
-				fmt.Printf("%*s<%s%s>\n", depth*2, "", n.Data, attrStr)
-				return
+	}
+	end = func(n *html.Node) {
+		if n.Type == html.ElementNode {
+			depth--
+			for c := n.FirstChild; c != nil; c = c.NextSibling {
+				if c.Type == html.ElementNode {
+					fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
+					return
+				}
 			}
 		}
-		fmt.Printf("%*s<%s%s/>\n", depth*2, "", n.Data, attrStr)
 	}
-}
-
-func endElement(n *html.Node) {
-	if n.Type == html.ElementNode {
-		depth--
-		for c := n.FirstChild; c != nil; c = c.NextSibling {
-			if c.Type == html.ElementNode {
-				fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
-				return
-			}
-		}
-	}
+	return
 }
 
 func testOutline2() {
@@ -80,5 +113,6 @@ func testOutline2() {
 	if err != nil {
 		log.Fatalf("outline: %v\n", err)
 	}
-	forEachNode(doc, startElement, endElement)
+	start, end := procFunc()
+	forEachNode(doc, start, end)
 }

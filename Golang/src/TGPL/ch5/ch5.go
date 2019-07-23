@@ -5,4 +5,8 @@ func main() {
 	//testOutline()
 	//testCountElementTag()
 	testOutline2()
+	//testSquares()
+	//testTopSort()
+	//testBreadthFirst()
+	//testTopSort2()
 }
