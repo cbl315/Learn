@@ -9,7 +9,22 @@ type Point struct {
 	X, Y float64
 }
 
+func (p Point) Add(q Point) Point { return Point{p.X + q.X, p.Y + q.Y} }
+func (p Point) Sub(q Point) Point { return Point{p.X - q.X, p.Y - q.Y} }
+
 type Path []Point
+
+func (path Path) TranslateBy(offset Point, add bool) {
+	var op func(p, q Point) Point
+	if add {
+		op = Point.Add
+	} else {
+		op = Point.Sub
+	}
+	for i := range path {
+		path[i] = op(path[i], offset)
+	}
+}
 
 func Distance(p, q Point) float64 {
 	return math.Hypot(q.X-p.X, q.Y-p.Y)
@@ -44,4 +59,14 @@ func testPathDistance() {
 		{1, 1},
 	}
 	fmt.Println(perim.Distance())
+}
+
+func testMethodExpression() {
+	p := Point{1, 2}
+	q := Point{4, 6}
+
+	distance := Point.Distance // method expression
+	fmt.Println(distance(p, q))
+	fmt.Printf("%ST \n", distance)
+
 }

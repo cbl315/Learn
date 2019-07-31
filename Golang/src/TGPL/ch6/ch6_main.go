@@ -1,6 +1,9 @@
 package main
 
 func main() {
-	testPointDistance()
-	testPathDistance()
+	//testPointDistance()
+	//testPathDistance()
+	//testColoredPoint()
+	//testMethodValue()
+	testIntSet()
 }
