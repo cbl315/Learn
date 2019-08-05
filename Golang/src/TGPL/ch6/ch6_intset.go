@@ -58,6 +58,20 @@ func (s *IntSet) String() string {
 	return buf.String()
 }
 
+// return the number of elements
+func (s *IntSet) Len() int {
+	return len(s.words)
+}
+
+// remove x from the set
+func (s *IntSet) Remove(x int) {
+	word, bit := x/64, uint(x%64)
+	if word > len(s.words) {
+		return
+	}
+	s.words[word] &= ^(1 << bit)
+}
+
 func testIntSet() {
 	var x, y IntSet
 	x.Add(1)
