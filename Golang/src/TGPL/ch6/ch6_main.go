@@ -5,5 +5,5 @@ func main() {
 	//testPathDistance()
 	//testColoredPoint()
 	//testMethodValue()
-	//testIntSet()
+	testIntSet()
 }

@@ -69,8 +69,21 @@ func (s *IntSet) Remove(x int) {
 	if word > len(s.words) {
 		return
 	}
+	//
 	s.words[word] &= ^(1 << bit)
 }
+
+// remove all elements from the set
+func (s *IntSet) Clear() {
+	for i, _ := range s.words {
+		s.words[i] &= 0
+	}
+}
+
+//// return a copy of the set
+//func (s *IntSet) Copy() *IntSet {
+//
+//}
 
 func testIntSet() {
 	var x, y IntSet
@@ -86,4 +99,6 @@ func testIntSet() {
 	x.UnionWith(&y)
 	fmt.Println(x.String())
 	fmt.Println(x.Has(9), x.Has(123))
+	x.Clear()
+	fmt.Println(x.String())
 }
