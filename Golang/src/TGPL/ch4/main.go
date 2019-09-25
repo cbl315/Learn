@@ -155,6 +155,12 @@ func testXkcd() {
 	searchByCache()
 }
 
+func testTreeString() {
+	a := []int{3, 1, 2}
+	t := InitTree(a)
+	fmt.Println(t.String())
+}
+
 func main() {
 
 	// 4.2.1 append func
@@ -185,6 +191,7 @@ func main() {
 	//testGithub()
 	//testGithubIssues()
 
-	testXkcd()
+	//testXkcd()
+	testTreeString()
 	return
 }
