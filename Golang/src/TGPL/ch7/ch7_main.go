@@ -1,6 +1,7 @@
 package main
 
 func main() {
-	testByteCounter()
+	//testByteCounter()
 	//testNewReader("test")
+	sleep()
 }
