@@ -24,6 +24,8 @@ func main() {
 	//testNewReader("test")
 	//sleep()
 	//interfaceValue()
-	printTracks(tracks)
-	sortTracks()
+	//printTracks(tracks)
+	//sortTracks()
+	//testMultiSortTable()
+	testIsPalindrome()
 }

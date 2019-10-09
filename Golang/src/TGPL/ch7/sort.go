@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"reflect"
 	"sort"
 	"text/tabwriter"
 	"time"
@@ -65,6 +66,7 @@ func sortTracks() {
 
 	// custom sort
 	sort.Sort(customSort{tracks, func(x, y *Track) bool {
+
 		if x.Title != y.Title {
 			return x.Title < y.Title
 		}
@@ -87,3 +89,75 @@ type customSort struct {
 func (x customSort) Len() int           { return len(x.t) }
 func (x customSort) Less(i, j int) bool { return x.less(x.t[i], x.t[j]) }
 func (x customSort) Swap(i, j int)      { x.t[i], x.t[j] = x.t[j], x.t[i] }
+
+/*
+Practice
+7.8
+*/
+type mulSortTable struct {
+	lruTitle []string // Last Recent Used Title
+	t        []*Track
+	less     func(x, y *Track, lru []string) bool
+}
+
+func (x mulSortTable) Len() int           { return len(x.t) }
+func (x mulSortTable) Less(i, j int) bool { return x.less(x.t[i], x.t[j], x.lruTitle) }
+func (x mulSortTable) Swap(i, j int)      { x.t[i], x.t[j] = x.t[j], x.t[i] }
+
+func less(x, y *Track, lruAttr []string) bool {
+	// use reflect get value of struct instance by filed name(string)
+	valX := reflect.ValueOf(x)
+	valY := reflect.ValueOf(y)
+	for _, field := range lruAttr {
+		kd := valX.Elem().FieldByName(field).Kind()
+		fieldX := valX.Elem().FieldByName(field)
+		fieldY := valY.Elem().FieldByName(field)
+		if fieldX != fieldY {
+			// Track Struct only have `int` and `string` two kinds of attributes
+			if kd == reflect.Int {
+				if fieldX.Int() != fieldY.Int() {
+					return fieldX.Int() < fieldY.Int()
+				}
+			} else if kd == reflect.String {
+				if fieldX.String() != fieldY.String() {
+					return fieldX.String() < fieldY.String()
+				}
+			}
+		}
+	}
+	return false
+}
+
+func testMultiSortTable() {
+	// todo compare with sort.Stable
+	lru := []string{"Year", "Title", "Artist", "Album", "Length"}
+
+	sort.Sort(mulSortTable{
+		lruTitle: lru,
+		t:        tracks,
+		less:     less,
+	})
+	printTracks(tracks)
+}
+
+/*
+Practice 7.10
+*/
+func IsPalindrome(s sort.Interface) bool {
+	for i := 0; i <= s.Len()/2+1; i++ {
+		j := s.Len() - 1 - i
+		if !(!s.Less(i, j) && !s.Less(j, i)) {
+			return false
+		}
+	}
+	return true
+}
+
+func testIsPalindrome() {
+	tmp := StringSlice{"213", "23", "312", "23421"}
+	tmp2 := StringSlice{"1", "2", "1"}
+	tmp3 := StringSlice{"1", "2", "2", "1"}
+	fmt.Println(IsPalindrome(tmp))
+	fmt.Println(IsPalindrome(tmp2))
+	fmt.Println(IsPalindrome(tmp3))
+}
