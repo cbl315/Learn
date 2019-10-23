@@ -1,6 +1,7 @@
 package main
 
 import (
+	"TGPL/ch7/surface"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,6 +12,7 @@ func http1() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/list", db.list)
 	mux.HandleFunc("/price", db.price)
+	mux.HandleFunc("/plot", surface.Plot)
 	log.Fatal(http.ListenAndServe("localhost:8000", mux))
 }
 

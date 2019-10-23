@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"io"
 	"os"
-	"testing"
 )
 
 func interfaceValue() {
@@ -29,7 +28,5 @@ func main() {
 	//sortTracks()
 	//testMultiSortTable()
 	//testIsPalindrome()
-	//http1()
-	t := &testing.T{}
-	TestEval(t)
+	http1()
 }
