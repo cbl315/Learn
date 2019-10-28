@@ -6,6 +6,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"os"
 )
@@ -19,6 +20,17 @@ func interfaceValue() {
 	w = nil
 }
 
+func testAseert() {
+	var w io.Writer
+	w = os.Stdout
+
+	rw := w.(io.ReadWriter) // rw 具有Read方法， w没有， 都有Write方法
+
+	fmt.Printf("%q", rw)
+	w = new(ByteCounter)
+	rw = w.(io.ReadWriter)
+}
+
 func main() {
 	//testByteCounter()
 	//testNewReader("test")
@@ -28,5 +40,7 @@ func main() {
 	//sortTracks()
 	//testMultiSortTable()
 	//testIsPalindrome()
-	http1()
+	//http1()
+	//testAseert()
+	xmlSelect()
 }
