@@ -24,7 +24,7 @@ func TestFunc(t *testing.T) {
 	expected := []int{2, 1, 4, 3}
 	index := 0
 	for {
-		t.Log(out.Val)
+		//t.Log(out.Val)
 		if out.Val != expected[index] {
 			t.Fatal("not pass")
 		}

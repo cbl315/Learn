@@ -59,7 +59,7 @@ func MySwapPairs(head *ListNode) *ListNode {
 }
 
 // 使用虚拟头结点进行结点交换
-func SwapPairs(head *ListNode) *ListNode {
+func swapPairs(head *ListNode) *ListNode {
 	// 头结点， 用于每次交换node时保存临时的头
 	if head == nil || head.Next == nil {
 		return head
