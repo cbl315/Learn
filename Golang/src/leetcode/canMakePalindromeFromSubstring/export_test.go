@@ -1,0 +1,3 @@
+package canMakePalindromeFromSubstring
+
+var CanMakePaliQueries = canMakePaliQueries
