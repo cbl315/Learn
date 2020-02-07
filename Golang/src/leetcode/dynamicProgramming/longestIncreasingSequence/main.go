@@ -12,7 +12,7 @@ func lengthOfLIS(nums []int) int {
 	/*
 		dp solution
 			dp[i] 表示选择第i个数的最长子序列
-			dp[i] = max(dp[1], dp[1], ..., dp[j]) + 1 其中 0<j<i-1 且 dp[j] < dp[i]
+			dp[i] = max(dp[1], dp[1], ..., dp[j]) + 1 其中 0<j<i-1 且 nums[j] < nums[i]
 	*/
 	var LIS = make(map[int]int, len(nums))
 	res := 0
