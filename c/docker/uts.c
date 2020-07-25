@@ -16,13 +16,14 @@ char* const child_args[] = {
 
 int child_main(void* args) {
     printf("In child process!\n");
+    sethostname("NewNamespace", 12);
     execv(child_args[0], child_args);
     return 1;
 }
 
 int main() {
     printf("Start: \n");
-    int child_pid = clone(child_main, child_stack+STACK_SIZE, SIGCHLD, NULL);
+    int child_pid = clone(child_main, child_stack+STACK_SIZE, CLONE_NEWUTS|SIGCHLD, NULL);
     waitpid(child_pid, NULL, 0);
     printf("End\n");
     return 0;
