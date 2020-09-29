@@ -8,7 +8,7 @@ import (
 
 func parseArgs() (ns string, clientset *kubernetes.Clientset) {
 	var kubeconfig *string
-	kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	kubeconfig = flag.String("kubeconfig", "~/.kube/config", "absolute path to the kubeconfig file")
 	nsP := flag.String("ns", "", "namespace")
 	flag.Parse()
 
@@ -25,7 +25,7 @@ func parseArgs() (ns string, clientset *kubernetes.Clientset) {
 }
 
 func main() {
-	ns, cs := parseArgs()
-	//deletePendingDeletionSvc(cs)
-	createPendingDeletionSvc(ns, cs)
+	_, cs := parseArgs()
+	deletePendingDeletionSvc(cs)
+	//createPendingDeletionSvc(ns, cs)
 }
