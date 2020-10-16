@@ -2,7 +2,6 @@ package client_go
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -11,10 +10,8 @@ import (
 	"runtime"
 )
 
-func GetPod() {
-	var kubeconfig = flag.String("kubeconfig", "~/.kube/config", "kubeconfig file")
-	flag.Parse()
-	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
+func GetPod(kubeconfig string) {
+	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
 		log.Fatal(err)
 	}
